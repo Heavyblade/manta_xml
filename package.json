@@ -1,8 +1,8 @@
 {
-  "name": "xmlparser",
+  "name": "manta_xml",
   "version": "0.0.1",
-  "description": "A simple xml parser",
-  "main": "xml_parser.js",
+  "description": "A simple pure javascript xml parser and xml to json converter",
+  "main": "manta_xml.js",
   "scripts": {
     "test": "mocha"
   },
