@@ -1,0 +1,15 @@
+{
+  "name": "xmlparser",
+  "version": "0.0.1",
+  "description": "A simple xml parser",
+  "main": "xml_parser.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Cristian Vasquez",
+  "license": "MIT",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^4.1.0"
+  }
+}
