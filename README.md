@@ -4,7 +4,7 @@ manta xml is really simple library with no npm, node or browser dependencies is 
 
 ## Why ?
 
-manta xml was developed beacause there are more and simpler javascript engines that v8, gecko o chakra for example appcelerator js engine or QT inner js engine, they can uderstand javascript but has no access to C/C++ bindings or npm modules.
+manta_xml was developed because there are more and simpler javascript engines than v8, spidermonkey o chakra out there, simpler js engines can 'understand' javascript but had no access to C/C++ bindings or npm modules to take advantaje of that has already been done.
 
 ## How ?
 
