@@ -18,52 +18,70 @@ npm install manta_xml
 
 #### Search into the xml
 
-Para buscar en el xml tienes la funcion 'find' que recibe una función que usara para filtrar o tambien puedes pasarle parametros con un objeto para indicar que campos quieres que busque.
+To search into the xml document there is a 'find' method wich can receibe a query object or a function to go through the xml tree to find nodes that matches the params.
 
-Resultado: En ambos casos de busquedas el resultado será un array con objetos json que representan los nodos encontrados, por ejemplo: 
+query result: in both cases the result is the same, an array with objects that represent the matching xml nodes, like this one:
 
-[{nodeName: 'node1', attrs: {id: '1'}}, {nodeName: 'node2', attrs: {id: '2', name: 'segundo nodo'}}] 
+```javascript
+[{nodeName: 'node1', attrs: {id: '1'}}, {nodeName: 'node2', attrs: {id: '2', name: 'second node'}}] 
+```
 
-El json que representa un nodo siempre tendra los atributos 'nodeName' y 'attrs', y tendrá los atributos '_text' y '_cdata', dependiendo si el elemento xml en su contenido tiene texto o una expresion de CDATA.
+the JSON that represents the node will always had the 'nodeName' and 'attrs' keys, and will have '_text' or '_cdata' keys if the current node wraps some text or cdata expression.
 
-Busqueda por parametros
-la busqueda por parametros es la más simple, solo pasas a la funcion el atributo por el que estas buscando y el valor a matchear que pueder ser cualquier string, numero, boolean o incluso una expresión regular:
 
-Parametros
+**Searching by query object:**
 
-attrs: Puedes indicar los atributos por los que quieres buscar y los valores que deben de tener.
-_text: Pudes indicar que valor debe tener el contenido de un nodo.
-nodeName: Puedes indicar que tag especifico estas buscando.
-_cdata: Puedes indicar que contenido buscas en _cdata del nodo actual.
-Ejemplos
-var parser = new cirrusXML('...xml...'), results;
+Searching with query object pretty simple if you have ever perfom a mongodb query the idea is the same, you provide an object that indicates the attribute that you are going to search in and a value to match against, it can be a standar value (string, int, bool, etc) or a regex literal.
 
-// Encuentra los nodos con el atributo id igual 1234, algo como <factura id='1234'> 
+
+**Syntax**
+
+```javascript
+var parser = require("manta_xml").parseXml;
+
+parser.find({attrs: {some_attribute: 'value to match'}});
+
+//or
+
+parser.find(function(node) { return(node.attrs.some_attribute * 3 > 1000);  });
+```
+
+
+**examples**:
+
+```javascript
+// Find nodes with id attribute equal to 1234, something like <bill id='1234'>
 results = parser.find({attrs: {id: '1234'}})
 
-// Encuentra los nodos de tipo factura en todo el xml, algo com <factura id='123' total='20000'> 
-results = parser.find({nodeName: 'factura'});
+// Find all the bill type nodes, <bill id='123' total='20000'> 
+results = parser.find({nodeName: 'bill'});
 
-// Encuentra los nodos cuyo atributo name comience con madri => <direcction value='madrid, calle 123'> 
-results = parser.find({attrs: {name: /madri/}});
+// Find all nodes wich name attribute start with 'ever' => <direction name='evergreen avenue'>
+results = parser.find({attrs: {name: /^ever/}});
 
-// Encuentra lods nodos que en el texto interno tengan la palabra 'mundo' => <linea id='12'>texto interno mundo</linea> 
-results = parser.find({_text: /mundo/});
+// Find all nodes that its inner text includes the word 'world'<line id='12'>Hello world</line> 
+results = parser.find({_text: /world/});
 
-// Encuentra los nodos con parametro name igual linea y que el texto diga 'mundo' => <node1 name='linea'>sin mundo</node1><node2 name='linea'>con mundo</node2> 
-results = parser.find({_text: /mundo/, attrs: {name: 'linea'}});
+// Find all nodes in wich name attribute it's equal to 'line' and its inner text includes the word 'world' => <node1 name='line'>without world</node1><node2 name='line'>with world</node2> 
+results = parser.find({_text: /mundo/, attrs: {name: 'line'}});
+```
 
-Busqueda por función
-Cuando necesites un mayor control sobre como se realizará el match para la busqueda, la funcion 'find' tambien acepta una función, a la que se le entrega el node y que debera devolver un true o false de acuerdo a las condiciones que desees operando sobre el nodo.
+**Searching with callback function:**
+
+If you need more control over the search or perform some operations, you can pass a function to the 'find' method instead of a query object, the callback function will receive a node object and should return a boolean value depending on the needed operations or comparisons.
 
 
-Ejemplos:
+**examples**:
 
-// Encuentra los nodos con el atributo id igual 1234, algo como <factura id='1234'> 
+```javascript
+
+// Find all nodes with id attribute equal to 1234, something like <bill id='1234'> 
 results = parser.find(function(node) { return(node.attrs.id && node.attrs.id === '1234'); }); 
 
-// Encuentra los nodos de tipo factura en todo el xml, algo com <factura id='123' total='20000'> 
+// Find all the bill type nodes, <bill id='123' total='20000'> 
 results = parser.find(function(node) { return(node.nodeName === 'factura'); }); 
 
-// Encuentra los nodos cuyo atributo name comience con madri => <direcction value='madrid, calle 123'> 
-results = parser.find(function(node) { return(node.attrs.name && node.attrs.name.match(/madri/)); });
+// Find all nodes wich name attribute start with 'ever' => <direction name='evergreen avenue'>
+results = parser.find(function(node) { return(node.attrs.name && node.attrs.name.match(/ever/)); });
+
+```
