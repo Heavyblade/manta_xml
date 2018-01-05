@@ -1,11 +1,11 @@
 var assert    = require('assert'),
     expect    = require("expect.js"),
-    xmlReader = require("./../lib/xml_parser").xmlReader,
-    Tree      = require("./../lib/tree").Tree,
-    Node      = require("./../lib/tree").Node,
-    goTo      = require("./../lib/xml_parser").goTo,
-    xml2JSON  = require("./../lib/manta_xml").xml2JSON,
-    xmlToTree = require("./../lib/manta_xml").xmlToTree;
+    xmlReader = require("./../src/xml_parser").xmlReader,
+    Tree      = require("./../src/tree").Tree,
+    Node      = require("./../src/tree").Node,
+    goTo      = require("./../src/xml_parser").goTo,
+    xml2JSON  = require("./../src/manta_xml").xml2JSON,
+    xmlToTree = require("./../src/manta_xml").xmlToTree;
 
 
 describe('xml to JSON', function() {

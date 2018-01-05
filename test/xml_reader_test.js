@@ -1,6 +1,6 @@
 var assert    = require('assert'),
     expect    = require("expect.js"),
-    xmlReader = require("./../lib/xml_parser").xmlReader;
+    xmlReader = require("./../src/xml_parser").xmlReader;
 
 describe('#xmlReader', function() {
     var xmlparser = null;
