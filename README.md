@@ -16,6 +16,17 @@ npm install manta_xml --save
 
 ### Use
 
+#### convert xml to JSON
+
+the xml2JSON method will take any xml string and will try to parse it
+
+```javascript
+    var converter = require("manta_xml").xml2JSON;
+
+    json = converter("<node id='23'>inner text</node>");
+    // {node: {attrs: {id: '23'}, _text: 'inner text'}  }
+```
+
 #### Search into the xml
 
 To search into the xml document there is a 'find' method wich can receibe a query object or a callback function to go through the xml tree and find nodes that matches the params.
@@ -45,7 +56,6 @@ Searching with a query object is pretty simple, you provide an object that indic
 
     parser.find(function(node) { return(node.attrs.some_attribute * 3 > 1000);  });
 ```
-
 
 **examples**:
 
