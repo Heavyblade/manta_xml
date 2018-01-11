@@ -4,12 +4,14 @@
   "description": "A simple pure javascript xml parser and xml to json converter",
   "main": "manta_xml.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "webpack -p"
   },
   "author": "Cristian Vasquez",
   "license": "MIT",
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^4.1.0"
+    "mocha": "^4.1.0",
+    "webpack": "^3.10.0"
   }
 }

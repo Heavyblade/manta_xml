@@ -1,4 +1,6 @@
 // This is just a place for the library API
 
-exports.xmlToTree = require("./xml_parser").xmlToTree;
-exports.xml2JSON  = require("./xml_parser").xml2JSON;
+mantaXML = function() {
+                this.xmlToTree = require("./xml_parser").xmlToTree;
+                this.xml2JSON  = require("./xml_parser").xml2JSON;
+           };
