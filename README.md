@@ -14,11 +14,8 @@ manta_xml was developed because out there are more and simpler javascript engine
 ```bash
     npm install manta_xml --save
 ```
-
-**bower**
-```bash
-    bower install manta_xml
-```
+**other evironments**
+In the dist folder other formats are available, the common one for the purpouse of this library is to use the manta_xml.var.js, it will add a global variable name called mantaXML that exposes the xml2JSON and xmlParser functions.
 
 ### Usage
 
@@ -54,7 +51,8 @@ Searching with a query object is pretty simple, you provide an object that indic
 **Syntax**
 
 ```javascript
-    var parser = require("manta_xml").parseXml;
+    var xmlParser = require("manta_xml").xmlParser,
+        parser    = xmlParser(".... some xml ...");
 
     parser.find({attrs: {some_attribute: 'value to match'}});
 
