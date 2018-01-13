@@ -1,8 +1,8 @@
 {
   "name": "manta_xml",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple pure javascript xml parser and xml to json converter",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "mocha",
     "build": "webpack -p"
