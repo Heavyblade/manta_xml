@@ -10,32 +10,28 @@
   <body>
     <div class="container">
         <header class="header clearfix">
-            <nav>
-              <ul class="nav nav-pills float-right">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-              </ul>
-            </nav>
             <h3 class="text-muted">Manta XML</h3>
+            <p>The global variable mantaXML is available to use de conversor or the searcher, it exposes the xmlToTree class and the xml2JSON function. that are explained in the documentation
+              <a href="https://github.com/Heavyblade/manta_xml">here.</a>
+            </p>
         </header>
         <main role="main">
             <div class="row">
               <div class="col-lg-5">
                   <div class="form-group">
                       <label for="exampleFormControlTextarea1">input XML</label>
-                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">xml code</textarea>
+                      <textarea id="inputXML" class="form-control" id="exampleFormControlTextarea1" rows="10">xml code</textarea>
                   </div>
               </div>
               <div class="col-lg-2">
                 <div class="mx-auto">
-                  <button type="button" class="btn btn-primary btn-sm" style="margin-top: 50px; width: 70px;">Convert</button>
+                  <button id="convert" type="button" class="btn btn-primary btn-sm" style="margin-top: 50px; width: 70px;">Convert</button>
                 </div>
               </div>
               <div class="col-lg-5">
                   <div class="form-group">
                       <label for="exampleFormControlTextarea1">output JSON</label>
-                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">xml code</textarea>
+                      <textarea id="json" class="form-control" id="exampleFormControlTextarea1" rows="10">JSON</textarea>
                   </div>
               </div>
             </div>
@@ -43,6 +39,12 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="./assets/bootstrap.min.js"></script>
-    <script src="../dist/manta_xml.js"></script>
+    <script src="../dist/manta_xml.var.js"></script>
+    <script>
+      $("#convert").on("click", function() {
+        var xml = $("#inputXML").val();
+        $("#json").val(JSON.stringify(mantaXML.xml2JSON(xml)))
+      });
+    </script>
   </body>
 </html>

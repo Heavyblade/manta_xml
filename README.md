@@ -10,11 +10,17 @@ manta_xml was developed because out there are more and simpler javascript engine
 
 ### Install
 
+**npm**
 ```bash
-npm install manta_xml --save
+    npm install manta_xml --save
 ```
 
-### Use
+**bower**
+```bash
+    bower install manta_xml
+```
+
+### Usage
 
 #### convert xml to JSON
 
