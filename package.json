@@ -2,7 +2,7 @@
   "name": "manta_xml",
   "version": "0.0.1",
   "description": "A simple pure javascript xml parser and xml to json converter",
-  "main": "manta_xml.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha",
     "build": "webpack -p"

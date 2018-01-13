@@ -1,9 +1,21 @@
 const path = require('path');
 
-module.exports = {
-  entry: './src/manta_xml.js',
-  output: {
-    filename: 'manta_xml.js',
-    path: path.resolve(__dirname, 'dist')
-  }
-};
+
+function createConfig(target) {
+  return {
+      entry: './src/index.js',
+      output: {
+          path:     path.resolve(__dirname, 'dist'),
+          filename: 'manta_xml.' + target + '.js',
+          library:  'mantaXML',
+          libraryTarget: target
+      }
+  };
+}
+
+module.exports = [
+  createConfig('var'),
+  createConfig('commonjs2'),
+  createConfig('amd'),
+  createConfig('umd')
+];

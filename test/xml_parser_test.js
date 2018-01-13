@@ -4,8 +4,8 @@ var assert    = require('assert'),
     Tree      = require("./../src/tree").Tree,
     Node      = require("./../src/tree").Node,
     goTo      = require("./../src/xml_parser").goTo,
-    xml2JSON  = require("./../src/manta_xml").xml2JSON,
-    xmlToTree = require("./../src/manta_xml").xmlToTree;
+    xml2JSON  = require("./../dist/manta_xml.commonjs2").xml2JSON,
+    xmlToTree = require("./../dist/manta_xml.commonjs2").xmlToTree;
 
 
 describe('xml to JSON', function() {
