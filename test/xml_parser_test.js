@@ -5,8 +5,7 @@ var assert    = require('assert'),
     Node      = require("./../src/tree").Node,
     goTo      = require("./../src/xml_parser").goTo,
     xml2JSON  = require("./../dist/manta_xml.commonjs2").xml2JSON,
-    xmlToTree = require("./../dist/manta_xml.commonjs2").xmlToTree;
-
+    xmlToTree = require("./../dist/manta_xml.commonjs2").xmlParser;
 
 describe('xml to JSON', function() {
 
@@ -93,12 +92,14 @@ describe('xml to JSON', function() {
 
         it("should be able to find nodes by regex on conditions", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
+            xmlTree = xmlToTree(xml);
             var nodes = xmlTree.find({attrs: {name: /hn/}});
             expect(nodes[0].nodeName).to.be("node3");
         });
 
         it("should be able to find node by its text equal and regex", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
+            xmlTree = xmlToTree(xml);
             var nodes = xmlTree.find({_text: "World"});
             var nodes2 = xmlTree.find({_text: /WO/i});
 
@@ -108,6 +109,7 @@ describe('xml to JSON', function() {
 
         it("should be able to find node by multiple items at the same time", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>World</node3></node2><node2 arr='some_name'>World</node2></node1>";
+            xmlTree = xmlToTree(xml);
             var nodes = xmlTree.find({_text: /WO/i, attrs: {name: 'john'}});
 
             expect(nodes.length).to.be(1);
@@ -145,13 +147,13 @@ describe('xml to JSON', function() {
         });
 
         it("should get attributes for an start element", function() {
-            var json = xml2JSON("<element1 hola='mundo'>content1</element1>");
-            expect(json).to.eql({element1: { _attrs: {hola: "mundo"}, _text: "content1"}});
+            var json = xml2JSON('<element1 hola="mundo==">content1</element1>');
+            expect(json).to.eql({element1: { _attrs: {hola: "mundo=="}, _text: "content1"}});
         });
 
         it("should handle attrs with inner elements", function(){
-            var json = xml2JSON('<hola valor1="nombre" valor2="nombre2"><other>mundo</other></hola>');
-            expect(json).to.eql({hola: { _attrs: {valor1:"nombre", valor2:"nombre2"}, other: {_text: "mundo"}}});
+            var json = xml2JSON('<hola valor1="nombre==" valor2="nombre2"><other>mundo</other></hola>');
+            expect(json).to.eql({hola: { _attrs: {valor1:"nombre==", valor2:"nombre2"}, other: {_text: "mundo"}}});
         });
 
         it("should parse special characters on node name", function() {

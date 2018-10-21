@@ -1,8 +1,8 @@
 #! /usr/local/bin/node
 
 var fs       = require("fs"),
-    parseXML = require("./../lib/xml_parser").parseXML;
+    parseXML = require("./../src/index").xml2JSON;
 
 fs.readFile(process.argv[2], "utf8", function(err, data) {
-    console.log(parseXML(data));
+    console.log(JSON.stringify(parseXML(data)));
 });
