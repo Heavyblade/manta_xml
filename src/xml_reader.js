@@ -93,8 +93,8 @@ function xmlReader() {
     };
     this.getAttrs   = function() {
         var element = this.getCurrent(),
-          regxSing  = /\s+([^=\s]+)='([^']+)'/g,
-          regxDoub  = /\s+([^=\s]+)="([^"]+)"/g,
+          regxSing  = /([^=\s]+)='([^']+)'/g,
+          regxDoub  = /([^=\s]+)="([^"]+)"/g,
           attrs     = {},
           param;
 
