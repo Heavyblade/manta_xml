@@ -52,6 +52,7 @@ Tree.prototype.toJSON = function() {
 
           if ( currentNode.data.attrs && Object.keys(currentNode.data.attrs).length > 0 ) { base._attrs = currentNode.data.attrs; }
           if ( currentNode.data._text ) { base._text  = currentNode.data._text; }
+          if ( currentNode.data._cdata ) { base._cdata = currentNode.data._cdata; }
 
           for (var i = 0, length = currentNode.children.length; i < length; i++) {
               var child = currentNode.children[i];

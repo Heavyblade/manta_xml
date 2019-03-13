@@ -115,6 +115,7 @@ function xmlReader() {
         var regx  = /<\!\[CDATA\s*\[((?!\]\]).*)\]\]>/,
             count = 1;
 
+        xmlString = xmlString.replace(/<\!\[CDATA\[\]\]>/g, "");
         while(xmlString.match(regx)) {
             this.cdata["cdata_" + count] = xmlString.match(regx)[1];
             xmlString = xmlString.replace(regx, "<![XDATA [cdata_" + count + "]]>");

@@ -66,6 +66,12 @@ describe('xml to JSON', function() {
             expect(goTo([0], xmlTree).data._text).to.be('hello world');
         });
 
+        it("should be able to handle an empty CDATA", function(){
+            var xml = '<rows><row id="MFTTH000000000216576"><cell><![CDATA[000000000216576]]></cell><cell><![CDATA[]]></cell></row><row id="MFTTH000000001097403"><cell><![CDATA[]]></cell></row></rows>';
+            xmlTree = xmlToTree(xml);
+            expect(goTo([0,0,0], xmlTree).data._cdata).to.be("000000000216576");
+        });
+
         it("should be able to find nodes based on function", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
 
