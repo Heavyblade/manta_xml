@@ -5,7 +5,8 @@ var assert    = require('assert'),
     Node      = require("./../src/tree").Node,
     goTo      = require("./../src/xml_parser").goTo,
     xml2JSON  = require("./../dist/manta_xml.commonjs2").xml2JSON,
-    xmlToTree = require("./../dist/manta_xml.commonjs2").xmlParser;
+    xmlToTree = require("./../dist/manta_xml.commonjs2").xmlParser,
+    treeToXML = require("./../dist/manta_xml.commonjs2").treeToXML;
 
 describe('xml to JSON', function() {
 
@@ -166,5 +167,16 @@ describe('xml to JSON', function() {
             var json = xml2JSON("<m:element1>content1<element2/></element1>");
             expect(json).to.eql({element1: { _text: "content1", element2: {}}});
         });
+    });
+
+    describe("#treeToXML", function() {
+
+      it("should convert an json to an equivalent xml", function() {
+        var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
+            xml     = treeToXML(xmlTree);
+
+        expect(xml).to.eql('<element1 param1="one" param2="two">content1</element1>');
+      });
+
     });
 });

@@ -75,6 +75,32 @@ Tree.prototype.toJSON = function() {
     return json;
 };
 
+Tree.prototype.toXML = function() {
+
+  function jsonToParams(json) {
+    var params = [], i;
+    for ( i in json ) {
+      params.push(i + "=\"" + json[i] + "\"" );
+    }
+    return params.join(" ");
+  }
+
+  function buildXML(currentNode) {
+    var xml = "<" + currentNode.data.nodeName + " ";
+
+    if ( currentNode.data.attrs && Object.keys(currentNode.data.attrs).length > 0 ) { xml += jsonToParams(currentNode.data.attrs)}
+    xml += ">";
+
+    if ( currentNode.data._text )  { xml += currentNode.data._text; }
+    if ( currentNode.data._cdata ) { xml += "<![CDATA[" +  currentNode.data._cdata + "]]>"; }
+
+    xml += "</" + currentNode.data.nodeName + ">";
+    return xml;
+  }
+
+  return buildXML(this._root);
+};
+
 Tree.prototype.find = function(callback) {
     var results = [];
 
