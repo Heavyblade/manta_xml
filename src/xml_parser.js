@@ -90,8 +90,8 @@ function xml2JSON(xmlString) {
     return xmlToTree(xmlString).toJSON();
 }
 
-function treeToXML(tree) {
-  return  tree.toXML();
+function treeToXML(tree, format) {
+  return  tree.toXML(format);
 }
 
 exports.xmlReader = xmlReader;

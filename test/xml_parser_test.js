@@ -171,11 +171,25 @@ describe('xml to JSON', function() {
 
     describe("#treeToXML", function() {
 
-      it("should convert an json to an equivalent xml", function() {
+      it("should convert an tree to an equivalent xml", function() {
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
             xml     = treeToXML(xmlTree);
 
         expect(xml).to.eql('<element1 param1="one" param2="two">content1</element1>');
+      });
+
+      it("should embed inner xml nodes", function(){
+        var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1<hello>Hello world</hello></element1>'),
+        xml     = treeToXML(xmlTree, false);
+
+        expect(xml).to.eql('<element1 param1="one" param2="two">content1<hello>Hello world</hello></element1>');
+      });
+
+      it("should return a formatted xml", function(){
+        var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1<hello>Hello world</hello></element1>'),
+            xml     = treeToXML(xmlTree, true);
+
+        expect(xml).to.eql('<element1 param1="one" param2="two">\n  content1\n  <hello>\n    Hello world\n  </hello></element1>');
       });
 
     });

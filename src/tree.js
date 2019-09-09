@@ -75,7 +75,7 @@ Tree.prototype.toJSON = function() {
     return json;
 };
 
-Tree.prototype.toXML = function() {
+Tree.prototype.toXML = function(format) {
 
   function jsonToParams(json) {
     var params = [], i;
@@ -85,20 +85,33 @@ Tree.prototype.toXML = function() {
     return params.join(" ");
   }
 
-  function buildXML(currentNode) {
-    var xml = "<" + currentNode.data.nodeName + " ";
+  function pad(spaces) {
+    var spacesString = new Array(spaces + 1).join(" ");
+    return(spaces == 0 ? "": ("\n" + spacesString));
+  }
 
-    if ( currentNode.data.attrs && Object.keys(currentNode.data.attrs).length > 0 ) { xml += jsonToParams(currentNode.data.attrs)}
+  function buildXML(currentNode, spaces, format) {
+    var xml = pad(spaces) + "<" + currentNode.data.nodeName;
+
+    if ( currentNode.data.attrs && Object.keys(currentNode.data.attrs).length > 0 ) { xml += " " + jsonToParams(currentNode.data.attrs)}
     xml += ">";
 
-    if ( currentNode.data._text )  { xml += currentNode.data._text; }
-    if ( currentNode.data._cdata ) { xml += "<![CDATA[" +  currentNode.data._cdata + "]]>"; }
+    if ( currentNode.data._text  ) { xml += (format ? pad(spaces+2) : "") + currentNode.data._text; }
+    if ( currentNode.data._cdata ) { xml += (format ? pad(spaces+2) : "") + "<![CDATA[" +  currentNode.data._cdata + "]]>"; }
 
-    xml += "</" + currentNode.data.nodeName + ">";
+    var length = currentNode.children.length,
+        child;
+
+    for (var i = 0; i < length; i++) {
+      child = currentNode.children[i];
+      xml += buildXML(child, (format ? (spaces + 2) : 0), format);
+    }
+
+    xml += pad(spaces) + "</" + currentNode.data.nodeName + ">";
     return xml;
   }
 
-  return buildXML(this._root);
+  return buildXML(this._root, 0, format);
 };
 
 Tree.prototype.find = function(callback) {
