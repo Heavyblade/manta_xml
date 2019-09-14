@@ -175,21 +175,47 @@ describe('xml to JSON', function() {
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
             xml     = treeToXML(xmlTree);
 
-        expect(xml).to.eql('<element1 param1="one" param2="two">content1</element1>');
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="one" param2="two">content1</element1>');
       });
 
       it("should embed inner xml nodes", function(){
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1<hello>Hello world</hello></element1>'),
         xml     = treeToXML(xmlTree, false);
 
-        expect(xml).to.eql('<element1 param1="one" param2="two">content1<hello>Hello world</hello></element1>');
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="one" param2="two">content1<hello>Hello world</hello></element1>');
       });
 
       it("should return a formatted xml", function(){
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1<hello>Hello world</hello></element1>'),
             xml     = treeToXML(xmlTree, true);
 
-        expect(xml).to.eql('<element1 param1="one" param2="two">\n  content1\n  <hello>\n    Hello world\n  </hello></element1>');
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?>\n<element1 param1="one" param2="two">\n  content1\n  <hello>\n    Hello world\n  </hello></element1>');
+      });
+
+      it("should be able to modify a node directly", function() {
+        var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>');
+
+        xmlTree._root.data.attrs.param1 = "1";
+        xmlTree._root.data.attrs.param3 = "new";
+        xmlTree._root.data._text = "New content";
+
+        var xml     = treeToXML(xmlTree);
+
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="1" param2="two" param3="new">New content</element1>');
+      });
+
+      it("Should be able to modify a node after a search", function(){
+        var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
+            node    = xmlTree.find({attrs: {param1: "one"}})[0];
+
+        node.attrs.param1 = "1";
+        node.attrs.param3 = "new";
+        node._text        = "New content";
+        node.nodeName     = "Other";
+
+        var xml = treeToXML(xmlTree);
+
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><Other param1="1" param2="two" param3="new">New content</Other>');
       });
 
     });

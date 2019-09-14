@@ -111,7 +111,7 @@ Tree.prototype.toXML = function(format) {
     return xml;
   }
 
-  return buildXML(this._root, 0, format);
+  return '<?xml version="1.0" encoding="UTF-8"?>' + (format ? "\n" : "") + buildXML(this._root, 0, format);
 };
 
 Tree.prototype.find = function(callback) {
