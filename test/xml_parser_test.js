@@ -192,6 +192,12 @@ describe('xml to JSON', function() {
         expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?>\n<element1 param1="one" param2="two">\n  content1\n  <hello>\n    Hello world\n  </hello></element1>');
       });
 
+      it("should handle self enclosed tags", function() {
+        
+      });
+    });
+
+    describe("editing xml document", function(){
       it("should be able to modify a node directly", function() {
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>');
 
@@ -218,5 +224,22 @@ describe('xml to JSON', function() {
         expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><Other param1="1" param2="two" param3="new">New content</Other>');
       });
 
+      it("should set attr values with a setter method", function() {
+        var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
+            node    = xmlTree.find({attrs: {param1: "one"}})[0];
+
+        node.setAttr("param1","1");
+        node.setAttr("param3", "new");
+
+        var xml = treeToXML(xmlTree);
+
+        expect(node.getAttr("param2")).to.eql("two");
+        expect(xml).to.eql('<element1 param1="1" param2="two" param3="new"><!-- comment -->content1</element1>');
+      });
+
+      it("should be able to remove a node from the xml", function(){
+        var document = xmlToTree('<element1 param1="one" param2="two">content1<child id="child1">my child</child></element1>'),
+            node     = document.find({nodeName: "child"})[0];
+      });
     });
 });

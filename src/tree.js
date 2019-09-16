@@ -4,6 +4,32 @@ function Node(data) {
     this.data     = data;
     this.parent   = null;
     this.children = [];
+
+    // Publick methods
+    this.setAttr  = function(key, value) {
+      this.data.attrs[key] = value;
+    };
+
+    this.getAttr  = function(key) {
+      return this.data.attrs[key];
+    };
+
+    this.deleteChild = function(node) {
+      var index = this.children.indexOf(node);
+      if (index > -1 ) {
+        delete this.children[index];
+        return true
+      }
+      return false;
+    }
+
+    this.addChild = function(node) {
+      this.children.push(node);
+    }
+
+    this.validNode = function(node) {
+      return node.attrs && node.nodeName
+    }
 }
 
 function Tree(data) {
