@@ -5,8 +5,12 @@ function Node(data) {
     this.parent   = null;
     this.children = [];
 
-    // Publick methods
+    // Public methods
     this.setAttr  = function(key, value) {
+      if (this.data.attrs == undefined) {
+        this.data.attrs = {};
+      }
+
       this.data.attrs[key] = value;
     };
 
@@ -17,18 +21,22 @@ function Node(data) {
     this.deleteChild = function(node) {
       var index = this.children.indexOf(node);
       if (index > -1 ) {
-        delete this.children[index];
+        this.children.splice(index, 1);
         return true
       }
       return false;
     }
 
     this.addChild = function(node) {
-      this.children.push(node);
+      if (this.validNode(node)) {
+        this.children.push(node);
+        return true;
+      }
+      return false;
     }
 
     this.validNode = function(node) {
-      return node.attrs && node.nodeName
+      return node.data.nodeName ? true : false;
     }
 }
 
