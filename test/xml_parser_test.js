@@ -1,12 +1,13 @@
-var assert    = require('assert'),
-    expect    = require("expect.js"),
-    xmlReader = require("./../src/xml_parser").xmlReader,
-    Tree      = require("./../src/tree").Tree,
-    Node      = require("./../src/tree").Node,
-    goTo      = require("./../src/xml_parser").goTo,
-    xml2JSON  = require("./../dist/manta_xml.commonjs2").xml2JSON,
-    xmlToTree = require("./../dist/manta_xml.commonjs2").xmlParser,
-    treeToXML = require("./../dist/manta_xml.commonjs2").treeToXML;
+var assert      = require('assert'),
+    expect      = require("expect.js"),
+    xmlReader   = require("./../src/xml_parser").xmlReader,
+    goTo        = require("./../src/xml_parser").goTo,
+    xml2JSON    = require("./../dist/manta_xml.commonjs2").xml2JSON,
+    xmlToTree   = require("./../dist/manta_xml.commonjs2").xmlParser,
+    treeToXML   = require("./../dist/manta_xml.commonjs2").treeToXML;
+    Tree        = require("./../dist/manta_xml.commonjs2").Tree;
+    Node        = require("./../dist/manta_xml.commonjs2").Node;
+    XMLDocument = require("./../dist/manta_xml.commonjs2").XMLDocument;
 
 describe('xml to JSON', function() {
 
@@ -188,7 +189,7 @@ describe('xml to JSON', function() {
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1<hello>Hello world</hello></element1>'),
             xml     = treeToXML(xmlTree, true);
 
-        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?>\n<element1 param1="one" param2="two">\n  content1\n  <hello>\n    Hello world\n  </hello></element1>');
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?>\n<element1 param1="one" param2="two">\n  content1\n  <hello>\n    Hello world\n  </hello>\n</element1>\n');
       });
 
       it("should handle self enclosed tags", function() {
@@ -233,11 +234,13 @@ describe('xml to JSON', function() {
         node.setAttr("param1","1");
         node.setAttr("param2","two");
         node.setAttr("param3", "new");
+        node.setText("New Content now");
+        node.setCData("Hello cData");
 
         var xml = treeToXML(xmlTree, false);
 
         expect(node.getAttr("param2")).to.eql("two");
-        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="1" param2="two" param3="new">content1</element1>');
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="1" param2="two" param3="new">New Content now<![CDATA[Hello cData]]></element1>');
       });
     });
 });

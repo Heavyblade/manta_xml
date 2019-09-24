@@ -1,6 +1,6 @@
 {
   "name": "manta_xml",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "A simple pure javascript xml parser and xml to json converter",
   "main": "./src/index.js",
   "scripts": {

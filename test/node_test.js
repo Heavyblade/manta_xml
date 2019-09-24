@@ -58,9 +58,24 @@ describe('Node', function() {
     node.addChild(node3);
     node.addChild(node4);
 
-    expect(node.children.length).to.eql(3)
+    expect(node.children.length).to.eql(3);
     expect(node.deleteChild(node2)).to.be(true);
-    expect(node.children.length).to.eql(2)
+    expect(node.children.length).to.eql(2);
   });
 
+  it("should be able to set and get the _text attribute for a node", function(){
+    var node = new Node();
+
+    expect(node.getText()).to.be("");
+    node.setText("Hello world");
+    expect(node.getText()).to.be("Hello world");
+  });
+
+  it("should be able to set and get the _text attribute for a node", function(){
+    var node = new Node();
+
+    expect(node.getCData()).to.be("");
+    node.setCData("Hello world");
+    expect(node.getCData()).to.be("Hello world");
+  });
 });

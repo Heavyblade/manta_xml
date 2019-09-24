@@ -1,12 +1,24 @@
 var _ = require("./utils")._;
 
+/**
+ * The Node object is the backbone of the tree structure that stores the XML nodes
+ * and it's data, it basically holds it's own data, it's node childrens and a reference to
+ * the parent node.
+ * @param {Object} data a JSON object with arbitrary data.
+ */
 function Node(data) {
-    this.data     = data;
+    // Attributes
+    this.data     = data || {};
     this.parent   = null;
     this.children = [];
 
-    // Public methods
-    this.setAttr  = function(key, value) {
+    /**
+     * Summary. sets a key attribute in the attributes object with the given value
+     * @param  {string} key   The name of the attribute.
+     * @param  {*}      value The value to be assigned to the given key.
+     * @return {void}
+     */
+    this.setAttr = function(key, value) {
       if (this.data.attrs == undefined) {
         this.data.attrs = {};
       }
@@ -14,10 +26,54 @@ function Node(data) {
       this.data.attrs[key] = value;
     };
 
-    this.getAttr  = function(key) {
+    /**
+     * Summary. returns the corresponding value for a given key
+     * @param {string} key The name of the attribute
+     * @return {*}         Returns the corresponding value
+     */
+    this.getAttr = function(key) {
       return this.data.attrs[key];
     };
 
+    /**
+     * Summary. sets the inner text attribute fot the XML node
+     * @param {string} text Text to be attached to the node
+     * @return {void}
+    */
+    this.setText = function(text) {
+        this.data._text = text;
+    };
+
+    /**
+     * Summary. get the inner text of a node.
+     * @return {string} Returns the text value attached to a node.
+    */
+    this.getText = function() {
+        return this.data._text || "";
+    };
+
+    /**
+     * Summary. Sets the inner CData attribute fot the xml node
+     * @param {string} cdata Text to be attached to the node as CData
+     * @return {void}
+    */
+    this.setCData = function(cdata) {
+        this.data._cdata = cdata;
+    };
+
+    /**
+     * Summary. get the inner CData of a node.
+     * @return {string} Returns the CData value attached to a node.
+    */
+    this.getCData = function() {
+        return this.data._cdata || "";
+    };
+
+    /**
+     * Summary. removes a direct node child
+     * @param  {Object} node The node object to be deleted
+     * @return {boolean}     Returns a boolean indicating if was possible to remove the node.
+     */
     this.deleteChild = function(node) {
       var index = this.children.indexOf(node);
       if (index > -1 ) {
@@ -27,6 +83,11 @@ function Node(data) {
       return false;
     };
 
+    /**
+     * Summary. Adds a Node to the list of children of the current node
+     * @param  {Object} node The node object to be added.
+     * @return {boolean}     Returns a boolean indicating if was possible to add the node.
+     */
     this.addChild = function(node) {
       if (this.validNode(node)) {
         this.children.push(node);
@@ -35,6 +96,11 @@ function Node(data) {
       return false;
     };
 
+    /**
+     * Summary. Indicates if node is valid node to be considered an XML node
+     * @param  {Object} node The node object to be validated.
+     * @return {boolean}     Returns true or false if the node is valid.
+     */
     this.validNode = function(node) {
       return node.data.nodeName ? true : false;
     };
@@ -141,7 +207,7 @@ Tree.prototype.toXML = function(format) {
       xml += buildXML(child, (format ? (spaces + 2) : 0), format);
     }
 
-    xml += pad(spaces) + "</" + currentNode.data.nodeName + ">";
+    xml += pad(spaces) + "</" + currentNode.data.nodeName + ">" + (format ? "\n" : "");
     return xml;
   }
 
