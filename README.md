@@ -10,16 +10,16 @@ manta_xml was developed because out there are more and simpler javascript engine
 
 ### Install
 
-**npm**
+#### npm
 ```bash
     npm install manta_xml --save
 ```
-**other evironments**
-In the dist folder other formats are available, the common one for the purpouse of this library is to use the manta_xml.var.js, it will add a global variable name called mantaXML that exposes the xml2JSON and xmlParser and xmlToTree functions.
+#### other evironments
+In the dist folder other formats are available, the common one for the purpouse of this library is to use the manta_xml.var.js, it will add a global variable name called mantaXML that exposes the xml2JSON and xmlParser functions.
 
-### Usage
+## Usage
 
-#### convert xml to JSON
+### convert xml to JSON
 
 the xml2JSON function will take any xml string and will try to parse and convert it to an equivalent JSON object.
 
@@ -30,7 +30,30 @@ the xml2JSON function will take any xml string and will try to parse and convert
     // {node: {attrs: {id: '23'}, _text: 'inner text'}  }
 ```
 
-#### Search into the xml
+### Edit an xml string.
+
+```javascript
+    var xmlParser = require("manta_xml").xmlParser,
+        document  = xmlParser("<node id='23'>inner text</node>"),
+        node      = document.find({attrs: {id: '23'}})[0];
+
+    node.setAttr("id", "24");
+    node.setAttr("name", "Manta");
+
+    var xml = document.toXML();
+    // '<?xml version="1.0" encoding="UTF-8"?><node id="24" name="Manta">inner text</node>'
+
+    // or a formatted xml
+    var xml = document.toXML(true);
+    /**
+     * '<?xml version="1.0" encoding="UTF-8"?>
+     * <node id="24" name="Manta">
+     *   inner text
+     * </node>'
+     */
+```
+
+### Search into the xml
 
 To search into the xml document there is a 'find' method wich can receive a query object or a callback function to go through the xml tree and find nodes that matches the params.
 
@@ -46,10 +69,6 @@ Searching with a query object is pretty simple, you provide an object that indic
         document  = xmlParser(".... some xml ...");
 
     document.find({attrs: {some_attribute: 'value to match'}});
-
-    //or
-
-    document.find(function(node) { return(node.attrs.some_attribute * 3 > 1000);  });
 ```
 
 **examples**:
@@ -96,7 +115,9 @@ results = document.find(function(node) { return(node.attrs.name && node.attrs.na
 
 ```
 
-**query result**: in both cases the result is the same, an array with objects that represent the matching xml nodes, this objects can be the node object it self or a JSON object representing the node like this one:
+### query result
+
+In both cases the result is the same, an array with objects that represent the matching xml nodes, this objects can be the node object it self or a JSON object representing the node like this one:
 
 ```javascript
   [{nodeName: 'node1', attrs: {id: '1'}, _text: "some text"}, {nodeName: 'node2', attrs: {id: '2', name: 'second node'}}]
