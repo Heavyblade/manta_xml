@@ -22,10 +22,10 @@ function Node(data) {
       var index = this.children.indexOf(node);
       if (index > -1 ) {
         this.children.splice(index, 1);
-        return true
+        return true;
       }
       return false;
-    }
+    };
 
     this.addChild = function(node) {
       if (this.validNode(node)) {
@@ -33,11 +33,11 @@ function Node(data) {
         return true;
       }
       return false;
-    }
+    };
 
     this.validNode = function(node) {
       return node.data.nodeName ? true : false;
-    }
+    };
 }
 
 function Tree(data) {
@@ -127,7 +127,7 @@ Tree.prototype.toXML = function(format) {
   function buildXML(currentNode, spaces, format) {
     var xml = pad(spaces) + "<" + currentNode.data.nodeName;
 
-    if ( currentNode.data.attrs && Object.keys(currentNode.data.attrs).length > 0 ) { xml += " " + jsonToParams(currentNode.data.attrs)}
+    if ( currentNode.data.attrs && Object.keys(currentNode.data.attrs).length > 0 ) { xml += " " + jsonToParams(currentNode.data.attrs); }
     xml += ">";
 
     if ( currentNode.data._text  ) { xml += (format ? pad(spaces+2) : "") + currentNode.data._text; }
@@ -149,8 +149,8 @@ Tree.prototype.toXML = function(format) {
 };
 
 Tree.prototype.find = function(callback, returnData) {
-    var results    = [],
-        returnData = (returnData !== undefined);
+    var results = [];
+    returnData = (returnData !== undefined);
 
     if (typeof(callback) === "function") {
         this.traverseDF(function(node){
