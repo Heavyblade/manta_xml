@@ -239,10 +239,5 @@ describe('xml to JSON', function() {
         expect(node.getAttr("param2")).to.eql("two");
         expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="1" param2="two" param3="new">content1</element1>');
       });
-
-      it("should be able to remove a node from the xml", function(){
-        var document = xmlToTree('<element1 param1="one" param2="two">content1<child id="child1">my child</child></element1>'),
-            node     = document.find({nodeName: "child"}, true)[0];
-      });
     });
 });
