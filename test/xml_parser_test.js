@@ -77,14 +77,14 @@ describe('xml to JSON', function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
 
             xmlTree = xmlToTree(xml);
-            var nodes = xmlTree.find(function(data) { return (data.attrs.name || "").match(/john/);});
+            var nodes = xmlTree.find(function(data) { return (data.attrs.name || "").match(/john/);}, true);
             expect(nodes[0].nodeName).to.be("node3");
         });
 
         it("should be able to find nodes by its nodeName", function(){
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
             xmlTree = xmlToTree(xml);
-            var nodes = xmlTree.find({nodeName: "node2"});
+            var nodes = xmlTree.find({nodeName: "node2"}, true);
 
             expect(nodes.length).to.be(2);
         });
@@ -93,22 +93,22 @@ describe('xml to JSON', function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
             xmlTree = xmlToTree(xml);
 
-            var nodes = xmlTree.find({attrs: {name: "john"}});
+            var nodes = xmlTree.find({attrs: {name: "john"}}, true);
             expect(nodes[0].nodeName).to.be("node3");
         });
 
         it("should be able to find nodes by regex on conditions", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
             xmlTree = xmlToTree(xml);
-            var nodes = xmlTree.find({attrs: {name: /hn/}});
+            var nodes = xmlTree.find({attrs: {name: /hn/}}, true);
             expect(nodes[0].nodeName).to.be("node3");
         });
 
         it("should be able to find node by its text equal and regex", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>doe</node3></node2><node2>World</node2></node1>";
             xmlTree = xmlToTree(xml);
-            var nodes = xmlTree.find({_text: "World"});
-            var nodes2 = xmlTree.find({_text: /WO/i});
+            var nodes = xmlTree.find({_text: "World"}, true);
+            var nodes2 = xmlTree.find({_text: /WO/i}, true);
 
             expect(nodes[0].nodeName).to.be("node2");
             expect(nodes2[0].nodeName).to.be("node2");
@@ -117,7 +117,7 @@ describe('xml to JSON', function() {
         it("should be able to find node by multiple items at the same time", function() {
             var xml = "<node1><node2 id='hola'><node3 name='john'>World</node3></node2><node2 arr='some_name'>World</node2></node1>";
             xmlTree = xmlToTree(xml);
-            var nodes = xmlTree.find({_text: /WO/i, attrs: {name: 'john'}});
+            var nodes = xmlTree.find({_text: /WO/i, attrs: {name: 'john'}}, true);
 
             expect(nodes.length).to.be(1);
             expect(nodes[0].nodeName).to.be("node3");
@@ -214,7 +214,7 @@ describe('xml to JSON', function() {
 
       it("Should be able to modify a node after a search", function(){
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
-            node    = xmlTree.find({attrs: {param1: "one"}})[0];
+            node    = xmlTree.find({attrs: {param1: "one"}}, true)[0];
 
         node.attrs.param1 = "1";
         node.attrs.param3 = "new";
@@ -229,20 +229,20 @@ describe('xml to JSON', function() {
       it("should set attr values with a setter method", function() {
         var xmlTree = xmlToTree('<element1 param1="one" param2="two"><!-- comment -->content1</element1>'),
             node    = xmlTree.find({attrs: {param1: "one"}})[0];
-        /**
+
         node.setAttr("param1","1");
+        node.setAttr("param2","two");
         node.setAttr("param3", "new");
 
-        var xml = treeToXML(xmlTree);
+        var xml = treeToXML(xmlTree, false);
 
         expect(node.getAttr("param2")).to.eql("two");
-        expect(xml).to.eql('<element1 param1="1" param2="two" param3="new"><!-- comment -->content1</element1>');
-         */
+        expect(xml).to.eql('<?xml version="1.0" encoding="UTF-8"?><element1 param1="1" param2="two" param3="new">content1</element1>');
       });
 
       it("should be able to remove a node from the xml", function(){
         var document = xmlToTree('<element1 param1="one" param2="two">content1<child id="child1">my child</child></element1>'),
-            node     = document.find({nodeName: "child"})[0];
+            node     = document.find({nodeName: "child"}, true)[0];
       });
     });
 });

@@ -148,12 +148,13 @@ Tree.prototype.toXML = function(format) {
   return '<?xml version="1.0" encoding="UTF-8"?>' + (format ? "\n" : "") + buildXML(this._root, 0, format);
 };
 
-Tree.prototype.find = function(callback) {
-    var results = [];
+Tree.prototype.find = function(callback, returnData) {
+    var results    = [],
+        returnData = (returnData !== undefined);
 
     if (typeof(callback) === "function") {
         this.traverseDF(function(node){
-            if (callback(node.data)) { results.push(node.data); }
+            if (callback(node.data)) { results.push(returnData ? node.data : node); }
         });
     } else if(typeof(callback) === "object") {
         var checkers = [],
@@ -192,7 +193,7 @@ Tree.prototype.find = function(callback) {
         }
 
         this.traverseDF(function(node){
-            if (_.all(node.data, checkers)) { results.push(node.data); }
+            if (_.all(node.data, checkers)) { results.push(returnData ? node.data : node); }
         });
     }
 
